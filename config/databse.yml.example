@@ -1,0 +1,13 @@
+defaults: &defaults
+  host: localhost
+  adapter: postgresql
+  user: username
+  password:
+
+development:
+  <<: *defaults
+  database: movie_app_development
+
+test:
+  <<: *defaults
+  database: movie_app_test
