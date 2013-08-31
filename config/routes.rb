@@ -1,8 +1,18 @@
 MovieApp::Application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :users
-      resources :movies
+      resources :users do
+        get 'likes', on: :member
+      end
+
+      resources :movies do
+        get 'likes', on: :member
+        resources :users, only: [] do
+          resources :likes, only: [:create]
+        end
+      end
+
+      resources :likes, only: [:destroy, :show]
     end
   end
 

@@ -27,4 +27,10 @@ class Api::V1::MoviesController < ApplicationController
     response = ::V1::MovieService.read params[:id]
     render json: response.result.to_json, status: response.status
   end
+
+  # GET /movies/:id/likes
+  def likes
+    response = ::V1::LikeService.list_users_from_movie params[:id]
+    render json: response.result.to_json, status: response.status
+  end
 end

@@ -85,7 +85,6 @@ describe V1::LikeService do
       specify { subject.result.should include movie }
     end
 
-
     context 'movie not found' do
       subject { V1::LikeService.list_movies_from_user('whoops') }
       specify { subject.status.should           == 404 }
