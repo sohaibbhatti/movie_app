@@ -20,4 +20,19 @@ describe V1::UserService do
       specify { subject[1][:errors][:email].should == 'incorrect format' }
     end
   end
+
+  describe '.read' do
+    context 'success' do
+      let!(:user) { FactoryGirl.create :user }
+      subject { V1::UserService.read(user.id) }
+      specify { subject[0].should       == 200 }
+      specify { subject[1]['id'].should == user.id }
+    end
+
+    context 'user not found' do
+      subject { V1::UserService.read('en') }
+      specify { subject[0].should           == 404 }
+      specify { subject[1][:message].should == 'user not found' }
+    end
+  end
 end
