@@ -4,6 +4,24 @@ describe User do
   it { should respond_to :email }
   it { should respond_to :name }
 
+  describe 'Assoaciations' do
+    it { should respond_to :likes }
+    it { should respond_to :liked_movies }
+
+    describe '.liked_movies' do
+      it 'retrives movies liked by a user' do
+        user      = FactoryGirl.create :user
+        movie     = FactoryGirl.create :movie
+        new_movie = FactoryGirl.create :movie
+        user.likes.create movie: movie
+        user.likes.create movie: new_movie
+
+        user.liked_movies.should include movie
+        user.liked_movies.should include new_movie
+      end
+    end
+  end
+
   describe 'Validations' do
     let(:user) { User.new }
 
