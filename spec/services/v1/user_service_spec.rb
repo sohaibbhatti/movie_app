@@ -17,7 +17,7 @@ describe V1::UserService do
       specify { subject.status.should                  == 400 }
       specify { subject.result[:message].should        == 'Validation Failure' }
       specify { subject.result[:errors][:name].should  == 'can\'t be blank' }
-      specify { subject.result[:errors][:email].should  == 'incorrect format' }
+      specify { subject.result[:errors][:email].should == 'incorrect format' }
     end
   end
 
@@ -78,7 +78,7 @@ describe V1::UserService do
 
     context 'user not found' do
       subject { V1::UserService.update('en', email: 'rick@roll.com') }
-      specify { subject.status.should == 404 }
+      specify { subject.status.should           == 404 }
       specify { subject.result[:message].should == 'user not found' }
     end
   end

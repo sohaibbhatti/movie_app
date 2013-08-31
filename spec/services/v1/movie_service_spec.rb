@@ -17,7 +17,7 @@ describe V1::MovieService do
       subject { V1::MovieService.create(title: nil) }
       specify { subject.status.should                  == 400 }
       specify { subject.result[:message].should        == 'Validation Failure' }
-      specify { subject.result[:errors][:title].should  == 'can\'t be blank' }
+      specify { subject.result[:errors][:title].should == 'can\'t be blank' }
     end
   end
 
@@ -31,6 +31,39 @@ describe V1::MovieService do
 
     context 'movie not found' do
       subject { V1::MovieService.read('en') }
+      specify { subject.status.should           == 404 }
+      specify { subject.result[:message].should == 'movie not found' }
+    end
+  end
+
+  describe '.update' do
+    let!(:movie) { FactoryGirl.create :movie }
+
+    context 'updation success' do
+      subject { V1::MovieService.update(movie.id, title: 'Rambo', genres: ['comedy']) }
+      specify { subject.status.should           == 200 }
+      specify { subject.result['title'].should  == 'Rambo' }
+      specify { subject.result['genres'].should == ['comedy'] }
+
+      it 'updates the record in the database' do
+        old_genres = movie.genres
+        expect {
+          subject
+        }.to change { movie.reload.genres }.to(['comedy'])
+      end
+    end
+  end
+
+  describe '.delete' do
+    context 'success' do
+      let!(:movie) { FactoryGirl.create :movie }
+      subject { V1::MovieService.delete(movie.id) }
+      specify { subject.status.should       == 200 }
+      specify { subject.result['id'].should == movie.id }
+    end
+
+    context 'user not found' do
+      subject { V1::MovieService.delete('en') }
       specify { subject.status.should           == 404 }
       specify { subject.result[:message].should == 'movie not found' }
     end

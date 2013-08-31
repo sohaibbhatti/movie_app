@@ -19,4 +19,21 @@ class V1::MovieService < Service
       not_found_response :movie
     end
   end
+
+  def self.update(movie_id, attrib)
+    movie = Movie.find_by_id movie_id
+    return not_found_response(:movie) unless movie
+    if movie.update_attributes(attrib)
+      success_response(movie)
+    else
+      validation_error_response(movie)
+    end
+  end
+
+  def self.delete(movie_id)
+    movie = Movie.find_by_id movie_id
+    return not_found_response(:movie) unless movie
+    movie.destroy
+    success_response(movie)
+  end
 end
