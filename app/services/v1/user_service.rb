@@ -10,6 +10,8 @@ class V1::UserService < Service
     else
       validation_error_response user
     end
+  rescue Exception => e
+    internal_error_response(e)
   end
 
   def self.read(user_id)
@@ -30,6 +32,8 @@ class V1::UserService < Service
     else
       validation_error_response user
     end
+  rescue Exception => e
+    internal_error_response(e)
   end
 
   def self.delete(user_id)

@@ -9,6 +9,8 @@ class V1::MovieService < Service
     else
       validation_error_response movie
     end
+  rescue Exception => e
+    internal_error_response(e)
   end
 
   def self.read(movie_id)
@@ -28,6 +30,8 @@ class V1::MovieService < Service
     else
       validation_error_response(movie)
     end
+  rescue Exception => e
+    internal_error_response(e)
   end
 
   def self.delete(movie_id)

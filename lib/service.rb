@@ -19,6 +19,10 @@ class Service
     ServiceResponse.new(400, (validation_error(object)))
   end
 
+  def self.internal_error_response(exception)
+    ServiceResponse.new(500, message: exception.message)
+  end
+
   def self.validation_error(object)
     {
       message: 'Validation Failure',

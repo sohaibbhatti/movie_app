@@ -19,6 +19,12 @@ describe V1::MovieService do
       specify { subject.result[:message].should        == 'Validation Failure' }
       specify { subject.result[:errors][:title].should == 'can\'t be blank' }
     end
+
+    context 'mass assignment or invalid attributes' do
+      subject { V1::MovieService.create(tiee: 'FLCL') }
+      specify { subject.status.should           == 500 }
+      specify { subject.result[:message].should == 'unknown attribute: tiee' }
+    end
   end
 
   describe '.read' do
@@ -51,6 +57,26 @@ describe V1::MovieService do
           subject
         }.to change { movie.reload.genres }.to(['comedy'])
       end
+    end
+
+    context 'validation error' do
+      subject { V1::MovieService.update(movie.id, title: nil) }
+      specify { subject.status.should           == 400 }
+      specify { subject.result[:message].should == 'Validation Failure' }
+      specify { subject.result[:errors].should be_present }
+    end
+
+    context 'movie not found' do
+      subject { V1::MovieService.update('en', title: 'Elysium') }
+      specify { subject.status.should           == 404 }
+      specify { subject.result[:message].should == 'movie not found' }
+    end
+
+
+    context 'mass assignment or invalid attributes' do
+      subject { V1::MovieService.update(movie.id, tiee: 'FLCL') }
+      specify { subject.status.should           == 500 }
+      specify { subject.result[:message].should == 'unknown attribute: tiee' }
     end
   end
 

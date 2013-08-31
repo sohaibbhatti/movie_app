@@ -19,6 +19,12 @@ describe V1::UserService do
       specify { subject.result[:errors][:name].should  == 'can\'t be blank' }
       specify { subject.result[:errors][:email].should == 'incorrect format' }
     end
+
+    context 'mass assignment or invalid attributes' do
+      subject { V1::UserService.create(emai: 'boo radley') }
+      specify { subject.status.should                  == 500 }
+      specify { subject.result[:message].should        == 'unknown attribute: emai' }
+    end
   end
 
   describe '.read' do
@@ -80,6 +86,12 @@ describe V1::UserService do
       subject { V1::UserService.update('en', email: 'rick@roll.com') }
       specify { subject.status.should           == 404 }
       specify { subject.result[:message].should == 'user not found' }
+    end
+
+    context 'mass assignment or invalid attributes' do
+      subject { V1::UserService.update(user.id, emai: 'boo radley') }
+      specify { subject.status.should                  == 500 }
+      specify { subject.result[:message].should        == 'unknown attribute: emai' }
     end
   end
 end
