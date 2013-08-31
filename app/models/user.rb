@@ -6,19 +6,4 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   validates :email, format: { with: EMAIL_REGEX, message: 'incorrect format' }
 
-  def validation_error
-    {
-      message: 'Validation Failure',
-      errors:  copy_errors
-    }
-  end
-
-  private
-
-  # returns a Hash of errors, attribute name  is the key, error description is in values
-  def copy_errors
-    errors = {}
-    self.errors.each { |attrib, error| errors[attrib] = error }
-    errors
-  end
 end

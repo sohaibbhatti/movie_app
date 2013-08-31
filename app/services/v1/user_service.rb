@@ -1,40 +1,41 @@
 require 'service_response'
+require 'service'
 
-class V1::UserService
+class V1::UserService < Service
   #TODO: Edgecase for invalid attributes
   def self.create(attrib)
     user = User.create attrib
     if user.valid?
-      ServiceResponse.new 201, user.attributes
+      creation_response user
     else
-      ServiceResponse.new 400, user.validation_error
+      validation_error_response user
     end
   end
 
   def self.read(user_id)
     user = User.find_by_id user_id
     if user
-      ServiceResponse.new 200, user.attributes
+      success_response user
     else
-      ServiceResponse.new 404, message: 'user not found'
+      not_found_response
     end
   end
 
   #TODO: Edgecase for invalid attributes
   def self.update(user_id, attrib)
     user = User.find_by_id user_id
-    return ServiceResponse.new(404, message: 'user not found') unless user
+    return not_found_response unless user
     if user.update_attributes(attrib)
-      ServiceResponse.new 200, user.attributes
+      success_response user
     else
-      ServiceResponse.new 400, user.validation_error
+      validation_error_response user
     end
   end
 
   def self.delete(user_id)
     user = User.find_by_id user_id
-    return ServiceResponse.new(404, message: 'user not found') unless user
+    return not_found_response unless user
     user.destroy
-    ServiceResponse.new 200, user.attributes
+    success_response user
   end
 end
