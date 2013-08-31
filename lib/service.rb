@@ -6,8 +6,9 @@ class Service
     ServiceResponse.new(201, object.attributes)
   end
 
+  # Implicitly try accessing attributes on object, for convenience
   def self.success_response(object)
-    ServiceResponse.new(200, object.attributes)
+    ServiceResponse.new(200, object_info(object))
   end
 
   def self.not_found_response(resource_name)
@@ -30,5 +31,9 @@ class Service
     errors = {}
     object.errors.each { |attrib, error| errors[attrib] = error }
     errors
+  end
+
+  def self.object_info(object)
+    object.respond_to?(:attributes) ? object.attributes : object
   end
 end
