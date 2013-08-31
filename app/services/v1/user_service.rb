@@ -2,7 +2,6 @@ require 'service_response'
 require 'service'
 
 class V1::UserService < Service
-  #TODO: Edgecase for invalid attributes
   def self.create(attrib)
     user = User.create attrib
     if user.valid?
@@ -23,7 +22,6 @@ class V1::UserService < Service
     end
   end
 
-  #TODO: Edgecase for invalid attributes
   def self.update(user_id, attrib)
     user = User.find_by_id user_id
     return not_found_response(:user) unless user

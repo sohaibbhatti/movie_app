@@ -35,7 +35,7 @@ describe 'User API' do
   it 'displays information of a user' do
     user = FactoryGirl.create :user
     get "api/v1/users/#{user.id}"
-    response.status.should == 200
+    response.status.should                == 200
     JSON.load(response.body)['id'].should == user.id
   end
 end

@@ -29,7 +29,7 @@ describe 'Movie API' do
   it 'displays information of a movie' do
     movie = FactoryGirl.create :movie
     get "api/v1/movies/#{movie.id}"
-    response.status.should == 200
+    response.status.should                == 200
     JSON.load(response.body)['id'].should == movie.id
   end
 end
