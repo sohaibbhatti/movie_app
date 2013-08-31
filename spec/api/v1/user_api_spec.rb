@@ -9,7 +9,13 @@ describe 'User API' do
     response.status.should == 200
   end
 
-  it 'Allows the updation of users' do
+  it 'notifies if the body is an invalid format' do
+    post 'api/v1/users', FactoryGirl.attributes_for(:user)
+    response.status.should == 400
+    JSON.load(response.body)['message'].should == 'Invalid JSON payload'
+  end
+
+  it 'allows the updation of users' do
     user = FactoryGirl.create :user
     put "api/v1/users/#{user.id}", { name: 'Dario' }.to_json
     response.status.should == 200
@@ -18,7 +24,7 @@ describe 'User API' do
     JSON.load(response.body)['id'].should == user.id
   end
 
-  it 'Allows the deletion of users' do
+  it 'allows the deletion of users' do
     user = FactoryGirl.create :user
     delete "api/v1/users/#{user.id}"
     response.status.should == 200
