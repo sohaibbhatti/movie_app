@@ -10,8 +10,8 @@ class Service
     ServiceResponse.new(200, object.attributes)
   end
 
-  def self.not_found_response
-    ServiceResponse.new(404, message: 'user not found')
+  def self.not_found_response(resource_name)
+    ServiceResponse.new(404, message: "#{resource_name} not found")
   end
 
   def self.validation_error_response(object)

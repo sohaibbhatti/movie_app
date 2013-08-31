@@ -17,14 +17,14 @@ class V1::UserService < Service
     if user
       success_response user
     else
-      not_found_response
+      not_found_response :user
     end
   end
 
   #TODO: Edgecase for invalid attributes
   def self.update(user_id, attrib)
     user = User.find_by_id user_id
-    return not_found_response unless user
+    return not_found_response(:user) unless user
     if user.update_attributes(attrib)
       success_response user
     else
@@ -34,7 +34,7 @@ class V1::UserService < Service
 
   def self.delete(user_id)
     user = User.find_by_id user_id
-    return not_found_response unless user
+    return not_found_response(:user) unless user
     user.destroy
     success_response user
   end

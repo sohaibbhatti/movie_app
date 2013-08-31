@@ -20,4 +20,19 @@ describe V1::MovieService do
       specify { subject.result[:errors][:title].should  == 'can\'t be blank' }
     end
   end
+
+  describe '.read' do
+    context 'success' do
+      let!(:movie) { FactoryGirl.create :movie }
+      subject { V1::MovieService.read(movie.id) }
+      specify { subject.status.should       == 200 }
+      specify { subject.result['id'].should == movie.id }
+    end
+
+    context 'movie not found' do
+      subject { V1::MovieService.read('en') }
+      specify { subject.status.should           == 404 }
+      specify { subject.result[:message].should == 'movie not found' }
+    end
+  end
 end
