@@ -8,8 +8,19 @@
 ## API design break down
 
 1. Controllers have been scoped with the api version. So to view the relevant controllers, they'll exist in the ``controllers/api/v1/`` folder
-2. The controllers are logicless. Instead they invoke the relevant **versioned service** for carrying out the necessary task. This makes testing all the outputs very straightforward. Also, as a result, the tests become a lot easier to read.
+2. The controllers are logicless. Instead they invoke the relevant **versioned service** for carrying out the necessary task.
 3. Integration tests of the API exist in ```spec/api```
+
+## JSON Response
+
+In the event of an unsuccessful response, along with the HTTP code, the following JSON is returned
+
+```JSON
+{
+  message: "",// String explaining the type of error, validation error etc
+  errors:  {} // Hash consisting field of errors. e.g for validation errors, fields where validations failed
+}
+```
 
 ## API ROUTES
 
