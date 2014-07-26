@@ -15,7 +15,7 @@
 
 In the event of an unsuccessful response, along with the HTTP code, the following JSON is returned
 
-```JSON
+```
 {
   message: "",// String explaining the type of error, validation error etc
   errors:  {} // Hash consisting field of errors. e.g for validation errors, fields where validations failed
